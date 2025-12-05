@@ -1,0 +1,181 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">
+        {{ isEditMode ? 'Editar Noticia' : 'Nueva Noticia' }}
+      </h1>
+      <p class="text-gray-600 mt-1">
+        {{ isEditMode ? 'Actualiza la información de la noticia' : 'Completa el formulario para crear una noticia' }}
+      </p>
+    </div>
+    <button (click)="cancel()" class="btn-secondary">
+      <i class="fas fa-times mr-2"></i>
+      Cancelar
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="text-center py-20">
+    <i class="fas fa-spinner fa-spin text-5xl text-primary"></i>
+    <p class="mt-4 text-gray-600">Cargando noticia...</p>
+  </div>
+
+  <!-- Formulario -->
+  <form *ngIf="!isLoading" [formGroup]="newsForm" (ngSubmit)="onSubmit()" class="space-y-6">
+    <!-- Información básica -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">Información Básica</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Título -->
+        <div class="md:col-span-2">
+          <label class="form-label">Título *</label>
+          <input type="text" formControlName="title" class="form-input">
+          <div *ngIf="newsForm.get('title')?.invalid && newsForm.get('title')?.touched" class="form-error">
+            <span *ngIf="newsForm.get('title')?.errors?.['required']">El título es requerido</span>
+            <span *ngIf="newsForm.get('title')?.errors?.['minlength']">Mínimo 3 caracteres</span>
+          </div>
+        </div>
+
+        <!-- Slug -->
+        <div class="md:col-span-2">
+          <label class="form-label">Slug (URL amigable) *</label>
+          <input type="text" formControlName="slug" class="form-input">
+          <p class="text-sm text-gray-500 mt-1">Se genera automáticamente desde el título</p>
+          <div *ngIf="newsForm.get('slug')?.invalid && newsForm.get('slug')?.touched" class="form-error">
+            El slug es requerido
+          </div>
+        </div>
+
+        <!-- Categoría -->
+        <div>
+          <label class="form-label">Categoría *</label>
+          <select formControlName="categoryId" class="form-input">
+            <option [ngValue]="null">Seleccionar categoría</option>
+            <option *ngFor="let category of categories" [ngValue]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+          <div *ngIf="newsForm.get('categoryId')?.invalid && newsForm.get('categoryId')?.touched" class="form-error">
+            La categoría es requerida
+          </div>
+        </div>
+
+        <!-- Tags -->
+        <div>
+          <label class="form-label">Etiquetas</label>
+          <input type="text" formControlName="tags" class="form-input" placeholder="Separadas por comas">
+          <p class="text-sm text-gray-500 mt-1">Ej: adventismo, salud, familia</p>
+        </div>
+
+        <!-- Resumen -->
+        <div class="md:col-span-2">
+          <label class="form-label">Resumen *</label>
+          <textarea formControlName="summary" rows="3" class="form-input"></textarea>
+          <p class="text-sm text-gray-500 mt-1">Máximo 500 caracteres</p>
+          <div *ngIf="newsForm.get('summary')?.invalid && newsForm.get('summary')?.touched" class="form-error">
+            <span *ngIf="newsForm.get('summary')?.errors?.['required']">El resumen es requerido</span>
+            <span *ngIf="newsForm.get('summary')?.errors?.['maxlength']">Máximo 500 caracteres</span>
+          </div>
+        </div>
+
+        <!-- Contenido -->
+        <div class="md:col-span-2">
+          <label class="form-label">Contenido *</label>
+          <textarea formControlName="content" rows="10" class="form-input"></textarea>
+          <div *ngIf="newsForm.get('content')?.invalid && newsForm.get('content')?.touched" class="form-error">
+            El contenido es requerido
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Imagen -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">Imagen Destacada</h2>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="form-label">Seleccionar imagen</label>
+          <input type="file" 
+                 accept="image/*"
+                 (change)="onImageSelected($event)"
+                 class="form-input">
+        </div>
+
+        <div *ngIf="imagePreview" class="mt-4">
+          <img [src]="imagePreview" alt="Preview" class="max-w-md rounded-lg shadow-md">
+        </div>
+      </div>
+    </div>
+
+    <!-- Opciones -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">Opciones</h2>
+      
+      <div class="space-y-4">
+        <div class="flex items-center">
+          <input type="checkbox" 
+                 formControlName="isFeatured" 
+                 id="isFeatured"
+                 class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+          <label for="isFeatured" class="ml-2 text-sm text-gray-700">
+            Marcar como destacada
+          </label>
+        </div>
+
+        <div class="flex items-center">
+          <input type="checkbox" 
+                 formControlName="allowComments" 
+                 id="allowComments"
+                 class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+          <label for="allowComments" class="ml-2 text-sm text-gray-700">
+            Permitir comentarios
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEO -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-6">SEO</h2>
+      
+      <div class="space-y-4">
+        <div>
+          <label class="form-label">Meta Título</label>
+          <input type="text" formControlName="metaTitle" class="form-input">
+        </div>
+
+        <div>
+          <label class="form-label">Meta Descripción</label>
+          <textarea formControlName="metaDescription" rows="2" class="form-input"></textarea>
+        </div>
+
+        <div>
+          <label class="form-label">Meta Keywords</label>
+          <input type="text" formControlName="metaKeywords" class="form-input">
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex items-center justify-end space-x-4">
+      <button type="button" (click)="cancel()" class="btn-secondary">
+        Cancelar
+      </button>
+      <button type="submit" 
+              [disabled]="isSubmitting || newsForm.invalid"
+              class="btn-primary">
+        <span *ngIf="!isSubmitting">
+          <i class="fas fa-save mr-2"></i>
+          {{ isEditMode ? 'Actualizar' : 'Crear' }} Noticia
+        </span>
+        <span *ngIf="isSubmitting">
+          <i class="fas fa-spinner fa-spin mr-2"></i>
+          Guardando...
+        </span>
+      </button>
+    </div>
+  </form>
+</div>

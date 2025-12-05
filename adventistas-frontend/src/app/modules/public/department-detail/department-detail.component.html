@@ -1,0 +1,90 @@
+<div *ngIf="loading" class="flex justify-center items-center min-h-screen">
+    <div class="text-center">
+        <i class="fas fa-spinner fa-spin text-4xl text-primary mb-4"></i>
+        <p class="text-gray-600">Cargando...</p>
+    </div>
+</div>
+
+<div *ngIf="error && !loading" class="container mx-auto px-4 py-8">
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        <p>Error al cargar el departamento. Por favor, intente nuevamente.</p>
+    </div>
+</div>
+
+<div *ngIf="department && !loading" class="container mx-auto px-4 py-8">
+
+    <!-- Department Header -->
+    <div class="mb-8">
+        <div class="flex items-center mb-4">
+            <i class="fas fa-{{department.icon}} text-5xl mr-4" [style.color]="department.color"></i>
+            <div>
+                <h1 class="text-4xl font-bold" [style.color]="department.color">
+                    {{department.name}}
+                </h1>
+                <p class="text-gray-600 mt-2" *ngIf="department.description">{{department.description}}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sections Navigation -->
+    <div class="mb-8" *ngIf="sections.length > 0">
+        <h2 class="text-2xl font-semibold mb-4">Secciones</h2>
+        <div class="flex flex-wrap gap-3">
+            <button *ngFor="let section of sections" (click)="selectSection(section)"
+                [class.bg-primary]="selectedSection?.id === section.id"
+                [class.text-white]="selectedSection?.id === section.id"
+                [class.bg-gray-100]="selectedSection?.id !== section.id"
+                class="px-6 py-3 rounded-lg border hover:shadow-md transition-all">
+                <i class="fas fa-{{section.icon}} mr-2"></i>
+                {{section.name}}
+            </button>
+        </div>
+    </div>
+
+    <!-- Content Display -->
+    <div *ngIf="selectedSection">
+        <h2 class="text-3xl font-bold mb-6">{{selectedSection.name}}</h2>
+        <p class="text-gray-600 mb-6" *ngIf="selectedSection.description">{{selectedSection.description}}</p>
+
+        <div *ngIf="content.length === 0" class="text-center py-12">
+            <i class="fas fa-box-open text-6xl text-gray-300 mb-4"></i>
+            <p class="text-gray-500">No hay contenido disponible en esta sección.</p>
+            <p class="text-sm text-gray-400 mt-2">Pronto se agregará nuevo contenido.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" *ngIf="content.length > 0">
+            <div *ngFor="let item of content"
+                class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+                <img *ngIf="item.featuredImage" [src]="item.featuredImage" [alt]="item.title"
+                    class="w-full h-48 object-cover">
+
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">{{item.title}}</h3>
+                    <p class="text-gray-600 mb-4 line-clamp-3" *ngIf="item.excerpt">{{item.excerpt}}</p>
+
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                        <span *ngIf="item.authorEmail">
+                            <i class="fas fa-user mr-1"></i>
+                            {{item.authorEmail}}
+                        </span>
+                        <span>
+                            <i class="fas fa-eye mr-1"></i>
+                            {{item.views}} vistas
+                        </span>
+                    </div>
+
+                    <button class="text-primary hover:underline font-medium">
+                        Leer más →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- No content message when no section selected -->
+    <div *ngIf="!selectedSection && sections.length === 0" class="text-center py-12">
+        <i class="fas fa-folder-open text-6xl text-gray-300 mb-4"></i>
+        <p class="text-gray-500">Este departamento aún no tiene secciones configuradas.</p>
+    </div>
+
+</div>

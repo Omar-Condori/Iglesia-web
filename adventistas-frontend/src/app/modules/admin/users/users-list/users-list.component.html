@@ -1,0 +1,137 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">Gestión de Usuarios</h1>
+      <p class="text-gray-600 mt-1">Administra los usuarios del sistema</p>
+    </div>
+    <div class="flex items-center gap-4">
+      <!-- Buscador -->
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <i class="fas fa-search text-gray-400"></i>
+        </div>
+        <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar por nombre o email..."
+          class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent w-80">
+      </div>
+      <button (click)="createUser()" class="btn-primary">
+        <i class="fas fa-plus mr-2"></i>
+        Nuevo Usuario
+      </button>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Usuario</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Roles</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
+            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let user of filteredUsers" class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <div
+                    class="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center font-semibold">
+                    {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
+                  </div>
+                </div>
+                <div class="ml-4">
+                  <div class="text-sm font-medium text-gray-900">
+                    {{ user.firstName }} {{ user.lastName }}
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ user.email }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <!-- Ministerios asignados con dropdown -->
+              <div class="relative">
+                <button (click)="toggleDepartmentDropdown(user.id)"
+                  class="flex items-center gap-2 text-sm text-gray-700 hover:text-primary transition-colors">
+                  <span *ngIf="(userDepartments.get(user.id) || []).length === 0" class="text-gray-400">
+                    Sin ministerios
+                  </span>
+                  <div *ngIf="(userDepartments.get(user.id) || []).length > 0" class="flex flex-wrap gap-1">
+                    <span *ngFor="let dept of userDepartments.get(user.id)?.slice(0, 2)"
+                      class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                      {{ dept.departmentName }}
+                    </span>
+                    <span *ngIf="(userDepartments.get(user.id) || []).length > 2"
+                      class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-600">
+                      +{{ (userDepartments.get(user.id) || []).length - 2 }}
+                    </span>
+                  </div>
+                  <i class="fas fa-chevron-down text-xs"></i>
+                </button>
+
+                <!-- Dropdown con checklist -->
+                <div *ngIf="openDropdownUserId === user.id"
+                  class="absolute left-0 top-full mt-1 w-72 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-96 overflow-y-auto">
+                  <div class="p-3 border-b border-gray-200 bg-gray-50">
+                    <h4 class="text-sm font-semibold text-gray-700">Asignar Ministerios</h4>
+                    <p class="text-xs text-gray-500 mt-1">Selecciona los ministerios del usuario</p>
+                  </div>
+                  <div class="p-2">
+                    <label *ngFor="let dept of departments"
+                      class="flex items-center px-3 py-2 hover:bg-gray-50 rounded cursor-pointer transition-colors">
+                      <input type="checkbox" [checked]="isDepartmentAssigned(user.id, dept.id)"
+                        (change)="toggleDepartment(user.id, dept)"
+                        class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary">
+                      <i class="fas fa-{{dept.icon}} ml-3 mr-2 text-primary"></i>
+                      <span class="text-sm text-gray-700">{{ dept.name }}</span>
+                    </label>
+                  </div>
+                  <div class="p-2 border-t border-gray-200 bg-gray-50 text-center">
+                    <button (click)="toggleDepartmentDropdown(user.id)"
+                      class="text-xs text-primary hover:text-blue-700 font-medium">
+                      Cerrar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span [class]="user.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                class="px-2 py-1 text-xs font-semibold rounded-full">
+                {{ user.isActive ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              {{ user.createdAt | date:'dd/MM/yyyy' }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <button (click)="editUser(user.id)" class="text-primary hover:text-blue-700 mr-3">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button (click)="deleteUser(user)" class="text-red-600 hover:text-red-700">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div *ngIf="filteredUsers.length === 0 && !isLoading" class="text-center py-12">
+      <i class="fas fa-users text-5xl text-gray-300 mb-3"></i>
+      <p class="text-gray-500">{{ searchTerm ? 'No se encontraron usuarios' : 'No hay usuarios registrados' }}</p>
+    </div>
+  </div>
+
+  <!-- Paginación -->
+  <app-pagination *ngIf="totalPages > 1" [currentPage]="currentPage" [totalPages]="totalPages"
+    [totalElements]="totalElements" [pageSize]="pageSize" (pageChange)="onPageChange($event)">
+  </app-pagination>
+</div>

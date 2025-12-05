@@ -1,0 +1,37 @@
+<div *ngIf="loading" class="flex justify-center items-center min-h-screen">
+    <div class="text-center">
+        <i class="fas fa-spinner fa-spin text-4xl text-primary mb-4"></i>
+        <p class="text-gray-600">Cargando...</p>
+    </div>
+</div>
+
+<div *ngIf="error && !loading" class="container mx-auto px-4 py-8">
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        <p>Error al cargar la sección. Por favor, intente nuevamente.</p>
+    </div>
+</div>
+
+<div *ngIf="section && !loading" class="container mx-auto px-4 py-8">
+
+    <!-- Section Header -->
+    <div class="mb-8">
+        <div class="flex items-center mb-6">
+            <i class="fas fa-{{section.icon}} text-5xl text-primary mr-4"></i>
+            <h1 class="text-4xl font-bold text-gray-800">{{section.title}}</h1>
+        </div>
+
+        <!-- Section Content -->
+        <div class="prose prose-lg max-w-none">
+            <div [innerHTML]="section.content"></div>
+        </div>
+    </div>
+
+    <!-- Back button -->
+    <div class="mt-8">
+        <a [routerLink]="['/']" class="text-primary hover:underline flex items-center">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Volver al inicio
+        </a>
+    </div>
+
+</div>

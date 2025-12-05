@@ -1,0 +1,81 @@
+<div
+  class="min-h-screen bg-gradient-to-br from-primary to-blue-800 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-2xl p-10">
+    <!-- Logo y título -->
+    <div class="text-center">
+      <i class="fas fa-church text-5xl text-primary mb-4"></i>
+      <h2 class="text-3xl font-bold text-gray-900">Iniciar Sesión</h2>
+      <p class="mt-2 text-sm text-gray-600">Panel Administrativo de Adventistas.org</p>
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
+      <!-- Email -->
+      <div>
+        <label for="email" class="form-label">Correo Electrónico</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-envelope text-gray-400"></i>
+          </div>
+          <input id="email" type="email" formControlName="email" class="form-input pl-10"
+            placeholder="admin@adventistas.org">
+        </div>
+        <div *ngIf="email?.invalid && email?.touched" class="form-error">
+          <span *ngIf="email?.errors?.['required']">El correo es requerido</span>
+          <span *ngIf="email?.errors?.['email']">Ingrese un correo válido</span>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <i class="fas fa-lock text-gray-400"></i>
+          </div>
+          <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+            class="form-input pl-10 pr-10" placeholder="••••••••">
+          <button type="button" (click)="togglePasswordVisibility()"
+            class="absolute inset-y-0 right-0 pr-3 flex items-center">
+            <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'" class="text-gray-400"></i>
+          </button>
+        </div>
+        <div *ngIf="password?.invalid && password?.touched" class="form-error">
+          <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
+          <span *ngIf="password?.errors?.['minlength']">Mínimo 6 caracteres</span>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button type="submit" [disabled]="isLoading" class="w-full btn-primary py-3 text-lg">
+          <span *ngIf="!isLoading">
+            <i class="fas fa-sign-in-alt mr-2"></i>
+            Iniciar Sesión
+          </span>
+          <span *ngIf="isLoading">
+            <i class="fas fa-spinner fa-spin mr-2"></i>
+            Iniciando sesión...
+          </span>
+        </button>
+      </div>
+
+      <!-- Register Button -->
+      <div>
+        <a routerLink="/register"
+          class="w-full flex justify-center py-3 px-4 border border-primary rounded-md shadow-sm text-lg font-medium text-primary bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+          <i class="fas fa-user-plus mr-2 mt-1"></i>
+          Registrarse
+        </a>
+      </div>
+    </form>
+
+    <!-- Link para volver -->
+    <div class="text-center">
+      <a routerLink="/" class="text-sm text-primary hover:text-blue-700">
+        <i class="fas fa-arrow-left mr-2"></i>
+        Volver al inicio
+      </a>
+    </div>
+  </div>
+</div>

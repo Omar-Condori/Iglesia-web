@@ -43,6 +43,15 @@ public class NewsController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('news.read')")
+    @SecurityRequirement(name = "bearer-jwt")
+    @Operation(summary = "Listar todas las noticias (Admin)")
+    public ResponseEntity<BaseResponse<Page<NewsDTO>>> getAllNews(Pageable pageable) {
+        Page<NewsDTO> news = newsService.getAllNews(pageable);
+        return ResponseEntity.ok(BaseResponse.success(news));
+    }
+
+    @GetMapping("/published")
     @Operation(summary = "Listar noticias publicadas", description = "Endpoint público")
     public ResponseEntity<BaseResponse<Page<NewsDTO>>> getPublishedNews(Pageable pageable) {
         Page<NewsDTO> news = newsService.getPublishedNews(pageable);

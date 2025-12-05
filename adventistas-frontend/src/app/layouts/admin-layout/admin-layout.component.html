@@ -1,0 +1,66 @@
+<div class="min-h-screen flex bg-gray-100">
+  <!-- Sidebar -->
+  <aside [class.w-64]="isSidebarOpen" [class.w-20]="!isSidebarOpen" 
+         class="bg-gray-900 text-white transition-all duration-300 flex flex-col">
+    <!-- Logo -->
+    <div class="p-4 border-b border-gray-800">
+      <div class="flex items-center" [class.justify-center]="!isSidebarOpen">
+        <i class="fas fa-church text-2xl"></i>
+        <span *ngIf="isSidebarOpen" class="ml-3 text-lg font-bold">Admin Panel</span>
+      </div>
+    </div>
+
+    <!-- Menu Items -->
+    <nav class="flex-1 p-4 space-y-2">
+      <a *ngFor="let item of menuItems" 
+         [routerLink]="item.route"
+         routerLinkActive="bg-primary"
+         [hidden]="!hasPermission(item.permission)"
+         class="flex items-center px-4 py-3 rounded-lg hover:bg-gray-800 transition-colors">
+        <i class="fas" [ngClass]="item.icon"></i>
+        <span *ngIf="isSidebarOpen" class="ml-3">{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <!-- User Info -->
+    <div class="p-4 border-t border-gray-800">
+      <div class="flex items-center" [class.justify-center]="!isSidebarOpen">
+        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
+          <i class="fas fa-user"></i>
+        </div>
+        <div *ngIf="isSidebarOpen" class="ml-3 flex-1">
+          <p class="text-sm font-medium">{{ currentUser?.firstName }}</p>
+          <p class="text-xs text-gray-400">{{ currentUser?.email }}</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col">
+    <!-- Top Bar -->
+    <header class="bg-white shadow-sm h-16 flex items-center justify-between px-6">
+      <button (click)="toggleSidebar()" class="text-gray-600 hover:text-gray-900">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+
+      <div class="flex items-center space-x-4">
+        <button routerLink="/" class="text-gray-600 hover:text-gray-900">
+          <i class="fas fa-home mr-2"></i>
+          Ver sitio público
+        </button>
+        <button (click)="logout()" class="text-red-600 hover:text-red-700">
+          <i class="fas fa-sign-out-alt mr-2"></i>
+          Cerrar sesión
+        </button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 p-6 overflow-auto">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
+
+<app-loader></app-loader>

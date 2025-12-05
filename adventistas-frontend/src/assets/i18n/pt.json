@@ -1,0 +1,64 @@
+{
+  "navbar": {
+    "home": "Início",
+    "news": "Notícias",
+    "churches": "Igrejas",
+    "courses": "Cursos",
+    "downloads": "Downloads",
+    "videos": "Vídeos",
+    "login": "Entrar",
+    "logout": "Sair",
+    "admin": "Administração"
+  },
+  "footer": {
+    "description": "Igreja Adventista do Sétimo Dia - Compartilhando esperança e fé em toda a América do Sul",
+    "quickLinks": "Links Rápidos",
+    "contact": "Contato",
+    "followUs": "Siga-nos",
+    "about": "Sobre",
+    "rights": "Todos os direitos reservados"
+  },
+  "home": {
+    "hero": {
+      "title": "Bem-vindos ao Adventistas.org",
+      "subtitle": "Compartilhando esperança, fé e comunidade",
+      "exploreNews": "Ver Notícias",
+      "viewCourses": "Explorar Cursos"
+    },
+    "stats": {
+      "churches": "Igrejas",
+      "members": "Membros",
+      "courses": "Cursos",
+      "countries": "Países"
+    },
+    "latestNews": {
+      "title": "Últimas Notícias",
+      "subtitle": "Mantenha-se informado com as novidades da nossa comunidade",
+      "viewAll": "Ver todas as notícias"
+    },
+    "courses": {
+      "title": "Cursos Destacados",
+      "subtitle": "Fortaleça sua fé com nossos estudos bíblicos",
+      "viewAll": "Ver todos os cursos"
+    },
+    "cta": {
+      "title": "Procurando uma igreja perto de você?",
+      "subtitle": "Encontre sua comunidade adventista mais próxima",
+      "button": "Buscar Igrejas"
+    }
+  },
+  "common": {
+    "readMore": "Ler mais",
+    "viewMore": "Ver mais",
+    "loading": "Carregando...",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "close": "Fechar",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "create": "Criar",
+    "update": "Atualizar"
+  }
+}

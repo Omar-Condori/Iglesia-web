@@ -4,15 +4,23 @@ import com.iglesia.adventistas.modules.departments.dto.CreateDepartmentRequest;
 import com.iglesia.adventistas.modules.departments.dto.DepartmentDTO;
 import com.iglesia.adventistas.modules.departments.entity.Department;
 import com.iglesia.adventistas.shared.util.SlugUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.stream.Collectors;
+
 @Component
+@RequiredArgsConstructor
 public class DepartmentMapper {
 
-    public DepartmentDTO toDTO(Department department) {
-        if (department == null) return null;
+    private final DepartmentSectionMapper sectionMapper;
 
-        return DepartmentDTO.builder()
+    public DepartmentDTO toDTO(Department department) {
+        if (department == null) {
+            return null;
+        }
+
+        DepartmentDTO dto = DepartmentDTO.builder()
                 .id(department.getId())
                 .name(department.getName())
                 .slug(department.getSlug())
@@ -23,10 +31,20 @@ public class DepartmentMapper {
                 .sortOrder(department.getSortOrder())
                 .createdAt(department.getCreatedAt())
                 .build();
+
+        // Map sections if they are loaded
+        if (department.getSections() != null && !department.getSections().isEmpty()) {
+            dto.setSections(department.getSections().stream()
+                    .map(sectionMapper::toDTO)
+                    .collect(Collectors.toList()));
+        }
+
+        return dto;
     }
 
     public Department toEntity(CreateDepartmentRequest request) {
-        if (request == null) return null;
+        if (request == null)
+            return null;
 
         Department department = new Department();
         department.setName(request.getName());
@@ -41,7 +59,8 @@ public class DepartmentMapper {
     }
 
     public void updateEntity(CreateDepartmentRequest request, Department department) {
-        if (request == null || department == null) return;
+        if (request == null || department == null)
+            return;
 
         department.setName(request.getName());
         department.setSlug(SlugUtils.generateSlug(request.getName()));

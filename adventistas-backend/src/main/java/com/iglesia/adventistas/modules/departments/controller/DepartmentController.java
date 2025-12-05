@@ -57,6 +57,13 @@ public class DepartmentController {
         return ResponseEntity.ok(BaseResponse.success(department));
     }
 
+    @GetMapping("/slug/{slug}")
+    @Operation(summary = "Obtener departamento por slug con secciones")
+    public ResponseEntity<BaseResponse<DepartmentDTO>> getDepartmentBySlug(@PathVariable String slug) {
+        DepartmentDTO department = departmentService.getBySlug(slug);
+        return ResponseEntity.ok(BaseResponse.success(department));
+    }
+
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('departments.manage')")
     @SecurityRequirement(name = "bearer-jwt")

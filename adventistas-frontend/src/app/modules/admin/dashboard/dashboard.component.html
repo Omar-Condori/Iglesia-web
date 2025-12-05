@@ -1,0 +1,147 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+      <p class="text-gray-600 mt-1">Bienvenido al panel de administración</p>
+    </div>
+    <div class="text-right text-sm text-gray-500">
+      <i class="far fa-calendar mr-2"></i>
+      {{ today | date:'fullDate' }}
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Noticias -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 font-medium">Noticias</p>
+          <p class="text-3xl font-bold text-gray-900 mt-2">{{ stats.totalNews }}</p>
+        </div>
+        <div class="bg-blue-100 rounded-full p-4">
+          <i class="fas fa-newspaper text-2xl text-blue-500"></i>
+        </div>
+      </div>
+      <a routerLink="/admin/news" class="text-sm text-blue-600 hover:text-blue-700 mt-4 inline-block">
+        Ver todas →
+      </a>
+    </div>
+
+    <!-- Iglesias -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 font-medium">Iglesias</p>
+          <p class="text-3xl font-bold text-gray-900 mt-2">{{ stats.totalChurches }}</p>
+        </div>
+        <div class="bg-green-100 rounded-full p-4">
+          <i class="fas fa-church text-2xl text-green-500"></i>
+        </div>
+      </div>
+      <a routerLink="/admin/churches" class="text-sm text-green-600 hover:text-green-700 mt-4 inline-block">
+        Ver todas →
+      </a>
+    </div>
+
+    <!-- Cursos -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-purple-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 font-medium">Cursos</p>
+          <p class="text-3xl font-bold text-gray-900 mt-2">{{ stats.totalCourses }}</p>
+        </div>
+        <div class="bg-purple-100 rounded-full p-4">
+          <i class="fas fa-graduation-cap text-2xl text-purple-500"></i>
+        </div>
+      </div>
+      <a routerLink="/admin/courses" class="text-sm text-purple-600 hover:text-purple-700 mt-4 inline-block">
+        Ver todos →
+      </a>
+    </div>
+
+    <!-- Usuarios -->
+    <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-orange-500">
+      <div class="flex items-center justify-between">
+        <div>
+          <p class="text-sm text-gray-600 font-medium">Usuarios</p>
+          <p class="text-3xl font-bold text-gray-900 mt-2">{{ stats.totalUsers }}</p>
+        </div>
+        <div class="bg-orange-100 rounded-full p-4">
+          <i class="fas fa-users text-2xl text-orange-500"></i>
+        </div>
+      </div>
+      <a routerLink="/admin/users" class="text-sm text-orange-600 hover:text-orange-700 mt-4 inline-block">
+        Ver todos →
+      </a>
+    </div>
+  </div>
+
+  <!-- Noticias recientes -->
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-bold text-gray-900">Noticias Recientes</h2>
+      <a routerLink="/admin/news" class="text-primary hover:text-blue-700 font-medium">
+        Ver todas →
+      </a>
+    </div>
+
+    <div class="space-y-4">
+      <div *ngFor="let news of recentNews" 
+           class="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+        <img [src]="news.imageUrl || 'assets/placeholder.jpg'" 
+             [alt]="news.title"
+             class="w-20 h-20 object-cover rounded-lg">
+        <div class="flex-1">
+          <h3 class="font-semibold text-gray-900">{{ news.title | truncate:60 }}</h3>
+          <p class="text-sm text-gray-600 mt-1">{{ news.summary | truncate:100 }}</p>
+          <div class="flex items-center mt-2 text-xs text-gray-500">
+            <span class="mr-3">
+              <i class="far fa-calendar mr-1"></i>
+              {{ news.createdAt | date:'dd/MM/yyyy' }}
+            </span>
+            <span [class]="news.status === 'PUBLISHED' ? 'text-green-600' : 'text-yellow-600'">
+              <i class="fas fa-circle mr-1" style="font-size: 6px;"></i>
+              {{ news.status }}
+            </span>
+          </div>
+        </div>
+        <div>
+          <a [routerLink]="['/admin/news/edit', news.id]" 
+             class="text-primary hover:text-blue-700">
+            <i class="fas fa-edit"></i>
+          </a>
+        </div>
+      </div>
+
+      <div *ngIf="recentNews.length === 0" class="text-center py-8 text-gray-500">
+        No hay noticias recientes
+      </div>
+    </div>
+  </div>
+
+  <!-- Accesos rápidos -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <a routerLink="/admin/news/new" 
+       class="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow text-center">
+      <i class="fas fa-plus-circle text-4xl text-primary mb-3"></i>
+      <h3 class="text-lg font-semibold text-gray-900">Nueva Noticia</h3>
+      <p class="text-sm text-gray-600 mt-2">Crear una nueva publicación</p>
+    </a>
+
+    <a routerLink="/admin/churches/new" 
+       class="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow text-center">
+      <i class="fas fa-plus-circle text-4xl text-green-500 mb-3"></i>
+      <h3 class="text-lg font-semibold text-gray-900">Nueva Iglesia</h3>
+      <p class="text-sm text-gray-600 mt-2">Registrar una nueva iglesia</p>
+    </a>
+
+    <a routerLink="/admin/courses/new" 
+       class="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow text-center">
+      <i class="fas fa-plus-circle text-4xl text-purple-500 mb-3"></i>
+      <h3 class="text-lg font-semibold text-gray-900">Nuevo Curso</h3>
+      <p class="text-sm text-gray-600 mt-2">Crear un nuevo curso</p>
+    </a>
+  </div>
+</div>

@@ -9,13 +9,15 @@ public interface DepartmentService {
 
     DepartmentDTO createDepartment(CreateDepartmentRequest request);
 
-    DepartmentDTO updateDepartment(Long id, CreateDepartmentRequest request);
-
     DepartmentDTO getDepartmentById(Long id);
+
+    DepartmentDTO getBySlug(String slug);
 
     List<DepartmentDTO> getAllDepartments();
 
     List<DepartmentDTO> getActiveDepartments();
+
+    DepartmentDTO updateDepartment(Long id, CreateDepartmentRequest request);
 
     void deleteDepartment(Long id);
 

@@ -9,9 +9,12 @@ import java.util.Optional;
 
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
-    Optional<Department> findBySlug(String slug);
 
     List<Department> findByIsActiveTrueOrderBySortOrder();
 
+    Optional<Department> findBySlug(String slug);
+
     boolean existsBySlug(String slug);
+
+    boolean existsByName(String name);
 }

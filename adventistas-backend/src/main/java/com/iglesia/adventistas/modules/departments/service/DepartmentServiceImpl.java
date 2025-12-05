@@ -70,6 +70,15 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     @Transactional(readOnly = true)
+    public DepartmentDTO getBySlug(String slug) {
+        Department department = departmentRepository.findBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Departamento no encontrado"));
+
+        return departmentMapper.toDTO(department);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<DepartmentDTO> getAllDepartments() {
         return departmentRepository.findAll().stream()
                 .map(departmentMapper::toDTO)

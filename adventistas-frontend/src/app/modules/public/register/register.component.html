@@ -1,0 +1,142 @@
+<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Crear una cuenta nueva
+        </h2>
+        <p class="mt-2 text-center text-sm text-gray-600">
+            ¿Ya tienes una cuenta?
+            <a routerLink="/login" class="font-medium text-primary hover:text-primary-dark">
+                Inicia sesión aquí
+            </a>
+        </p>
+    </div>
+
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+                <!-- Nombres -->
+                <div>
+                    <label for="nombres" class="block text-sm font-medium text-gray-700">Nombres</label>
+                    <div class="mt-1">
+                        <input id="nombres" type="text" formControlName="nombres"
+                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                            [ngClass]="{ 'border-red-500': submitted && f['nombres'].errors }">
+                    </div>
+                    <div *ngIf="submitted && f['nombres'].errors" class="mt-1 text-xs text-red-600">
+                        <div *ngIf="f['nombres'].errors['required']">El nombre es obligatorio</div>
+                    </div>
+                </div>
+
+                <!-- Apellidos -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="apellidoPaterno" class="block text-sm font-medium text-gray-700">Apellido
+                            Paterno</label>
+                        <div class="mt-1">
+                            <input id="apellidoPaterno" type="text" formControlName="apellidoPaterno"
+                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                [ngClass]="{ 'border-red-500': submitted && f['apellidoPaterno'].errors }">
+                        </div>
+                        <div *ngIf="submitted && f['apellidoPaterno'].errors" class="mt-1 text-xs text-red-600">
+                            <div *ngIf="f['apellidoPaterno'].errors['required']">Obligatorio</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="apellidoMaterno" class="block text-sm font-medium text-gray-700">Apellido
+                            Materno</label>
+                        <div class="mt-1">
+                            <input id="apellidoMaterno" type="text" formControlName="apellidoMaterno"
+                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                                [ngClass]="{ 'border-red-500': submitted && f['apellidoMaterno'].errors }">
+                        </div>
+                        <div *ngIf="submitted && f['apellidoMaterno'].errors" class="mt-1 text-xs text-red-600">
+                            <div *ngIf="f['apellidoMaterno'].errors['required']">Obligatorio</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Correo electrónico</label>
+                    <div class="mt-1">
+                        <input id="email" type="email" formControlName="email"
+                            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                            [ngClass]="{ 'border-red-500': submitted && f['email'].errors }">
+                    </div>
+                    <div *ngIf="submitted && f['email'].errors" class="mt-1 text-xs text-red-600">
+                        <div *ngIf="f['email'].errors['required']">El correo es obligatorio</div>
+                        <div *ngIf="f['email'].errors['email']">Correo inválido</div>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                    <div class="mt-1 relative">
+                        <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                            class="appearance-none block w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                            [ngClass]="{ 'border-red-500': submitted && f['password'].errors }">
+                        <button type="button" (click)="togglePasswordVisibility()"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                            <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                        </button>
+                    </div>
+                    <div *ngIf="submitted && f['password'].errors" class="mt-1 text-xs text-red-600">
+                        <div *ngIf="f['password'].errors['required']">La contraseña es obligatoria</div>
+                        <div *ngIf="f['password'].errors['minlength']">Mínimo 6 caracteres</div>
+                    </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label for="confirmarPassword" class="block text-sm font-medium text-gray-700">Confirmar
+                        Contraseña</label>
+                    <div class="mt-1 relative">
+                        <input id="confirmarPassword" [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmarPassword"
+                            class="appearance-none block w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                            [ngClass]="{ 'border-red-500': submitted && f['confirmarPassword'].errors }">
+                        <button type="button" (click)="toggleConfirmPasswordVisibility()"
+                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                            <i class="fas" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                        </button>
+                    </div>
+                    <div *ngIf="submitted && f['confirmarPassword'].errors" class="mt-1 text-xs text-red-600">
+                        <div *ngIf="f['confirmarPassword'].errors['required']">La confirmación es obligatoria</div>
+                        <div *ngIf="f['confirmarPassword'].errors['passwordMismatch']">Las contraseñas no coinciden
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Miembro Iglesia -->
+                <div class="flex items-center">
+                    <input id="miembroIglesia" type="checkbox" formControlName="miembroIglesia"
+                        class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                    <label for="miembroIglesia" class="ml-2 block text-sm text-gray-900">
+                        Soy miembro de la Iglesia Adventista
+                    </label>
+                </div>
+
+                <!-- Submit Button -->
+                <div>
+                    <button type="submit" [disabled]="isLoading"
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed">
+                        <span *ngIf="isLoading">
+                            <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                </path>
+                            </svg>
+                            Registrando...
+                        </span>
+                        <span *ngIf="!isLoading">Registrarse</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

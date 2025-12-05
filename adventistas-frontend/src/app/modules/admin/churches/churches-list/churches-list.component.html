@@ -1,0 +1,122 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">Gestión de Iglesias</h1>
+      <p class="text-gray-600 mt-1">Administra las iglesias registradas</p>
+    </div>
+    <button (click)="createChurch()" class="btn-primary">
+      <i class="fas fa-plus mr-2"></i>
+      Nueva Iglesia
+    </button>
+  </div>
+
+  <!-- Buscador -->
+  <div class="bg-white rounded-lg shadow-md p-4">
+    <div class="relative">
+      <input type="text" 
+             [(ngModel)]="searchTerm"
+             placeholder="Buscar iglesias..."
+             class="form-input pl-10">
+      <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="text-center py-20">
+    <i class="fas fa-spinner fa-spin text-5xl text-primary"></i>
+    <p class="mt-4 text-gray-600">Cargando iglesias...</p>
+  </div>
+
+  <!-- Tabla -->
+  <div *ngIf="!isLoading" class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Imagen</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nombre</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ciudad</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dirección</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Contacto</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+            <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let church of churches" class="hover:bg-gray-50">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <img [src]="church.imageUrl || 'assets/placeholder-church.jpg'" 
+                   [alt]="church.name"
+                   class="w-16 h-16 object-cover rounded-lg">
+            </td>
+            <td class="px-6 py-4">
+              <div class="text-sm font-medium text-gray-900">{{ church.name }}</div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ church.city }}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500">
+              {{ church.address | truncate:40 }}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500">
+              <div *ngIf="church.phone">
+                <i class="fas fa-phone mr-1"></i>
+                {{ church.phone }}
+              </div>
+              <div *ngIf="church.email">
+                <i class="fas fa-envelope mr-1"></i>
+                {{ church.email }}
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span [class]="church.isActive ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'" 
+                    class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full">
+                {{ church.isActive ? 'Activa' : 'Inactiva' }}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <div class="flex items-center justify-end space-x-2">
+                <button *ngIf="church.latitude && church.longitude"
+                        (click)="viewOnMap(church)" 
+                        class="text-green-600 hover:text-green-700"
+                        title="Ver en mapa">
+                  <i class="fas fa-map-marker-alt"></i>
+                </button>
+                <button (click)="editChurch(church.id)" 
+                        class="text-primary hover:text-blue-700"
+                        title="Editar">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button (click)="deleteChurch(church)" 
+                        class="text-red-600 hover:text-red-700"
+                        title="Eliminar">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- No hay iglesias -->
+    <div *ngIf="churches.length === 0" class="text-center py-12">
+      <i class="fas fa-church text-5xl text-gray-300 mb-3"></i>
+      <p class="text-gray-500">No hay iglesias registradas</p>
+      <button (click)="createChurch()" class="btn-primary mt-4">
+        <i class="fas fa-plus mr-2"></i>
+        Registrar primera iglesia
+      </button>
+    </div>
+  </div>
+
+  <!-- Paginación -->
+  <app-pagination *ngIf="totalPages > 1"
+                  [currentPage]="currentPage"
+                  [totalPages]="totalPages"
+                  [totalElements]="totalElements"
+                  [pageSize]="pageSize"
+                  (pageChange)="onPageChange($event)">
+  </app-pagination>
+</div>

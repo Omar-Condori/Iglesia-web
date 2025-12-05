@@ -1,0 +1,131 @@
+<!-- Hero Section -->
+<section class="bg-gradient-to-r from-primary to-blue-800 text-white py-20">
+  <div class="container mx-auto px-4">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-5xl font-bold mb-6">{{ 'home.hero.title' | translate }}</h1>
+      <p class="text-xl mb-8 text-blue-100">{{ 'home.hero.subtitle' | translate }}</p>
+      <div class="flex justify-center space-x-4">
+        <a routerLink="/news" class="btn-white">
+          {{ 'home.hero.exploreNews' | translate }}
+        </a>
+        <a routerLink="/courses" class="btn-outline-white">
+          {{ 'home.hero.viewCourses' | translate }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Stats -->
+<section class="py-12 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="text-center">
+        <i class="fas fa-church text-5xl text-primary mb-3"></i>
+        <h3 class="text-3xl font-bold text-gray-900">500+</h3>
+        <p class="text-gray-600">{{ 'home.stats.churches' | translate }}</p>
+      </div>
+      <div class="text-center">
+        <i class="fas fa-users text-5xl text-primary mb-3"></i>
+        <h3 class="text-3xl font-bold text-gray-900">50,000+</h3>
+        <p class="text-gray-600">{{ 'home.stats.members' | translate }}</p>
+      </div>
+      <div class="text-center">
+        <i class="fas fa-graduation-cap text-5xl text-primary mb-3"></i>
+        <h3 class="text-3xl font-bold text-gray-900">100+</h3>
+        <p class="text-gray-600">{{ 'home.stats.courses' | translate }}</p>
+      </div>
+      <div class="text-center">
+        <i class="fas fa-globe text-5xl text-primary mb-3"></i>
+        <h3 class="text-3xl font-bold text-gray-900">15</h3>
+        <p class="text-gray-600">{{ 'home.stats.countries' | translate }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Latest News -->
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ 'home.latestNews.title' | translate }}</h2>
+      <p class="text-xl text-gray-600">{{ 'home.latestNews.subtitle' | translate }}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div *ngFor="let news of latestNews"
+        class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+        <img [src]="news.imageUrl || 'assets/placeholder.jpg'" [alt]="news.title" class="w-full h-48 object-cover">
+        <div class="p-6">
+          <span class="text-sm text-primary font-semibold">{{ news.categoryName }}</span>
+          <h3 class="text-xl font-bold text-gray-900 mt-2 mb-3">
+            {{ news.title | truncate:60 }}
+          </h3>
+          <p class="text-gray-600 mb-4">{{ (news.summary || '') | truncate:120 }}</p>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-500">{{ (news.publishedAt || '') | timeAgo }}</span>
+            <a [routerLink]="['/news', news.slug]" class="text-primary hover:text-blue-700 font-medium">
+              {{ 'common.readMore' | translate }} →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a routerLink="/news" class="btn-primary">
+        {{ 'home.latestNews.viewAll' | translate }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Courses -->
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-4xl font-bold text-gray-900 mb-4">{{ 'home.courses.title' | translate }}</h2>
+      <p class="text-xl text-gray-600">{{ 'home.courses.subtitle' | translate }}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div *ngFor="let course of featuredCourses"
+        class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+        <img [src]="course.imageUrl || 'assets/placeholder-course.jpg'" [alt]="course.title"
+          class="w-full h-40 object-cover">
+        <div class="p-4">
+          <h3 class="text-lg font-bold text-gray-900 mb-2">
+            {{ course.title | truncate:50 }}
+          </h3>
+          <p class="text-sm text-gray-600 mb-3">{{ (course.description || '') | truncate:80 }}</p>
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-gray-500">
+              <i class="fas fa-book-open mr-1"></i>
+              {{ course.lessonsCount }} lecciones
+            </span>
+            <a [routerLink]="['/courses', course.slug]" class="text-primary hover:text-blue-700 text-sm font-medium">
+              Ver curso →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a routerLink="/courses" class="btn-primary">
+        {{ 'home.courses.viewAll' | translate }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-primary text-white">
+  <div class="container mx-auto px-4 text-center">
+    <h2 class="text-4xl font-bold mb-4">{{ 'home.cta.title' | translate }}</h2>
+    <p class="text-xl mb-8 text-blue-100">{{ 'home.cta.subtitle' | translate }}</p>
+    <a routerLink="/churches" class="btn-white">
+      {{ 'home.cta.button' | translate }}
+    </a>
+  </div>
+</section>

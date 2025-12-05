@@ -1,0 +1,94 @@
+<div class="bg-gray-50 min-h-screen">
+  <!-- Loading -->
+  <div *ngIf="isLoading" class="container mx-auto px-4 py-20 text-center">
+    <i class="fas fa-spinner fa-spin text-5xl text-primary"></i>
+    <p class="mt-4 text-gray-600">Cargando noticia...</p>
+  </div>
+
+  <!-- Contenido de la noticia -->
+  <article *ngIf="!isLoading && news" class="bg-white">
+    <!-- Imagen principal -->
+    <div class="relative h-96 overflow-hidden">
+      <img [src]="news.imageUrl || 'assets/placeholder.jpg'" [alt]="news.title" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 container mx-auto px-4 pb-8">
+        <span class="inline-block bg-primary text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
+          {{ news.categoryName }}
+        </span>
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">{{ news.title }}</h1>
+        <div class="flex items-center text-white/90 text-sm">
+          <i class="far fa-calendar mr-2"></i>
+          <span>{{ news.publishedAt | date:'dd MMMM yyyy' }}</span>
+          <span class="mx-3">•</span>
+          <i class="far fa-user mr-2"></i>
+          <span>{{ news.authorName }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido -->
+    <div class="container mx-auto px-4 py-12">
+      <div class="max-w-4xl mx-auto">
+        <!-- Resumen -->
+        <p class="text-xl text-gray-700 leading-relaxed mb-8 italic border-l-4 border-primary pl-6">
+          {{ news.summary }}
+        </p>
+
+        <!-- Contenido principal -->
+        <div class="prose prose-lg max-w-none mb-12" [innerHTML]="news.content"></div>
+
+        <!-- Botones de compartir -->
+        <div class="border-t border-b border-gray-200 py-6 my-8">
+          <p class="text-sm font-semibold text-gray-700 mb-3">Compartir esta noticia:</p>
+          <div class="flex space-x-3">
+            <button (click)="shareOnFacebook()"
+              class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              <i class="fab fa-facebook-f mr-2"></i>
+              Facebook
+            </button>
+            <button (click)="shareOnTwitter()"
+              class="flex items-center px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-colors">
+              <i class="fab fa-twitter mr-2"></i>
+              Twitter
+            </button>
+            <button (click)="shareOnWhatsApp()"
+              class="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+              <i class="fab fa-whatsapp mr-2"></i>
+              WhatsApp
+            </button>
+          </div>
+        </div>
+
+        <!-- Botón volver -->
+        <div class="text-center">
+          <a routerLink="/news" class="btn-secondary">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Volver a Noticias
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Noticias relacionadas -->
+  <section *ngIf="relatedNews.length > 0" class="bg-gray-50 py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8">Noticias Relacionadas</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <article *ngFor="let related of relatedNews"
+          class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+          [routerLink]="['/news', related.slug]">
+          <img [src]="related.imageUrl || 'assets/placeholder.jpg'" [alt]="related.title"
+            class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-lg font-bold text-gray-900 mb-2 hover:text-primary transition-colors">
+              {{ related.title | truncate:60 }}
+            </h3>
+            <p class="text-gray-600 text-sm mb-3">{{ (related.summary || '') | truncate:100 }}</p>
+            <span class="text-primary text-sm font-medium">Leer más →</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</div>

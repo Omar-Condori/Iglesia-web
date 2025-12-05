@@ -4,6 +4,9 @@ import com.iglesia.adventistas.shared.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "departments")
 @Getter
@@ -39,4 +42,8 @@ public class Department extends BaseEntity {
     @Builder.Default
     @Column(name = "sort_order", nullable = false)
     private Integer sortOrder = 0;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DepartmentSection> sections = new ArrayList<>();
 }

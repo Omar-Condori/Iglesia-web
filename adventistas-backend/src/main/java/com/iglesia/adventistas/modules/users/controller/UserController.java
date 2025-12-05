@@ -1,8 +1,11 @@
 package com.iglesia.adventistas.modules.users.controller;
 
+import com.iglesia.adventistas.modules.users.dto.AssignDepartmentRequest;
 import com.iglesia.adventistas.modules.users.dto.CreateUserRequest;
 import com.iglesia.adventistas.modules.users.dto.UpdateUserRequest;
+import com.iglesia.adventistas.modules.users.dto.UserDepartmentDTO;
 import com.iglesia.adventistas.modules.users.dto.UserResponse;
+import com.iglesia.adventistas.modules.users.service.UserDepartmentService;
 import com.iglesia.adventistas.modules.users.service.UserService;
 import com.iglesia.adventistas.shared.base.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -25,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final UserDepartmentService userDepartmentService;
 
     @PostMapping
     @PreAuthorize("hasAuthority('users.create')")
@@ -72,5 +78,37 @@ public class UserController {
     public ResponseEntity<BaseResponse<Void>> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok(BaseResponse.success(null, "Usuario eliminado exitosamente"));
+    }
+
+    // ========== DEPARTMENT ASSIGNMENT ENDPOINTS ==========
+
+    @GetMapping("/{id}/departments")
+    @PreAuthorize("hasAuthority('users.view')")
+    @Operation(summary = "Obtener departamentos asignados a un usuario")
+    public ResponseEntity<BaseResponse<List<UserDepartmentDTO>>> getUserDepartments(@PathVariable Long id) {
+        List<UserDepartmentDTO> departments = userDepartmentService.getUserDepartments(id);
+        return ResponseEntity.ok(BaseResponse.success(departments));
+    }
+
+    @PostMapping("/{id}/departments")
+    @PreAuthorize("hasAuthority('users.edit')")
+    @Operation(summary = "Asignar departamento a usuario", description = "Asigna un departamento con permisos específicos")
+    public ResponseEntity<BaseResponse<UserDepartmentDTO>> assignDepartment(
+            @PathVariable Long id,
+            @Valid @RequestBody AssignDepartmentRequest request) {
+
+        UserDepartmentDTO result = userDepartmentService.assignDepartment(id, request);
+        return ResponseEntity.ok(BaseResponse.success(result, "Departamento asignado exitosamente"));
+    }
+
+    @DeleteMapping("/{id}/departments/{departmentId}")
+    @PreAuthorize("hasAuthority('users.edit')")
+    @Operation(summary = "Remover departamento de usuario")
+    public ResponseEntity<BaseResponse<Void>> removeDepartment(
+            @PathVariable Long id,
+            @PathVariable Long departmentId) {
+
+        userDepartmentService.removeDepartment(id, departmentId);
+        return ResponseEntity.ok(BaseResponse.success(null, "Departamento removido exitosamente"));
     }
 }

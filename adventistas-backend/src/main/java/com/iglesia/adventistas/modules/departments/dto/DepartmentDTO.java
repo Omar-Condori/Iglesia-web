@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.time.LocalDateTime;
 
 @Data
@@ -20,5 +22,8 @@ public class DepartmentDTO {
     private String icon;
     private Boolean isActive;
     private Integer sortOrder;
+
+    @Builder.Default
+    private List<DepartmentSectionDTO> sections = new ArrayList<>();
     private LocalDateTime createdAt;
 }
