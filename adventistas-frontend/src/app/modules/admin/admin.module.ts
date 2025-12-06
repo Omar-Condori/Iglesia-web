@@ -20,7 +20,10 @@ import { DepartmentsComponent } from './departments/departments.component';
 
 // Users
 import { UsersListComponent } from './users/users-list/users-list.component';
-// import { UserFormComponent } from './users/user-form/user-form.component';
+import { UserFormComponent } from './users/user-form/user-form.component';
+
+// Prayer Requests
+import { PrayerRequestsComponent } from './prayer-requests/prayer-requests.component';
 
 @NgModule({
   declarations: [
@@ -31,8 +34,9 @@ import { UsersListComponent } from './users/users-list/users-list.component';
     ChurchFormComponent,
     CategoriesComponent,
     DepartmentsComponent,
-    UsersListComponent
-    // UserFormComponent
+    UsersListComponent,
+    UserFormComponent,
+    PrayerRequestsComponent
   ],
   imports: [
     CommonModule,

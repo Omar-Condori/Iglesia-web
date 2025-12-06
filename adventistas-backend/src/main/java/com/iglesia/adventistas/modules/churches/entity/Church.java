@@ -53,16 +53,31 @@ public class Church extends BaseEntity {
     @Column(length = 255)
     private String website;
 
-    @Column(precision = 10, scale = 8)
+    @Column(precision = 10, scale = 6)
     private BigDecimal latitude;
 
-    @Column(precision = 11, scale = 8)
+    @Column(precision = 11, scale = 6)
     private BigDecimal longitude;
 
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
+    @Column(length = 200)
+    private String pastor;
+
+    @Column(name = "founded_year")
+    private Integer foundedYear;
+
+    @Column(name = "members_count")
+    private Integer membersCount;
+
+    @Column(name = "service_schedule", columnDefinition = "TEXT")
+    private String serviceSchedule;
+
+    @Column(name = "image_url", length = 500)
+    private String imageUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "union_id", nullable = false)
+    @JoinColumn(name = "union_id", nullable = true)
     private Union union;
 }

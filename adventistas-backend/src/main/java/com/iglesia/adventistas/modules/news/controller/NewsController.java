@@ -43,9 +43,8 @@ public class NewsController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('news.read')")
     @SecurityRequirement(name = "bearer-jwt")
-    @Operation(summary = "Listar todas las noticias (Admin)")
+    @Operation(summary = "Listar todas las noticias (Admin)", description = "Requiere autenticación. Retorna todas las noticias incluyendo borradores.")
     public ResponseEntity<BaseResponse<Page<NewsDTO>>> getAllNews(Pageable pageable) {
         Page<NewsDTO> news = newsService.getAllNews(pageable);
         return ResponseEntity.ok(BaseResponse.success(news));
@@ -69,6 +68,15 @@ public class NewsController {
     @Operation(summary = "Obtener noticia por slug")
     public ResponseEntity<BaseResponse<NewsDTO>> getNewsBySlug(@PathVariable String slug) {
         NewsDTO news = newsService.getNewsBySlug(slug);
+        return ResponseEntity.ok(BaseResponse.success(news));
+    }
+
+    @GetMapping("/category/{categoryId}")
+    @Operation(summary = "Obtener noticias por categoría", description = "Endpoint público para obtener noticias publicadas de una categoría específica")
+    public ResponseEntity<BaseResponse<Page<NewsDTO>>> getNewsByCategory(
+            @PathVariable Long categoryId,
+            Pageable pageable) {
+        Page<NewsDTO> news = newsService.getNewsByCategory(categoryId, pageable);
         return ResponseEntity.ok(BaseResponse.success(news));
     }
 

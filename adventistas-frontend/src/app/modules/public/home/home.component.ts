@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NewsService } from '../../../core/services/news.service';
 import { CourseService } from '../../../core/services/course.service';
+import { TokenService } from '../../../core/services/token.service';
 import { News } from '../../../core/models/news.model';
 import { Course } from '../../../core/models/course.model';
+
+
 
 /**
  * Componente de página de inicio
@@ -19,8 +23,11 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private newsService: NewsService,
-    private courseService: CourseService
-  ) {}
+    private courseService: CourseService,
+    private tokenService: TokenService,
+    private router: Router
+  ) { }
+
 
   ngOnInit(): void {
     this.loadLatestNews();
@@ -47,5 +54,36 @@ export class HomeComponent implements OnInit {
         console.error('Error loading courses:', error);
       }
     });
+  }
+
+
+  onPrayerRequest(): void {
+    console.log('🙏 Click en Pedir Oración');
+    const hasToken = this.tokenService.hasToken();
+    console.log('Token encontrado:', hasToken);
+
+    if (hasToken && !this.tokenService.isTokenExpired()) {
+      console.log('Navegando a /prayer-request');
+      this.router.navigate(['/prayer-request']);
+    } else {
+      console.log('No autenticado, guardando returnUrl y redirigiendo a login');
+      localStorage.setItem('returnUrl', '/prayer-request');
+      this.router.navigate(['/login']);
+    }
+  }
+
+  onHomeVisitRequest(): void {
+    console.log('🏠 Click en Visitar Mi Hogar');
+    const hasToken = this.tokenService.hasToken();
+    console.log('Token encontrado:', hasToken);
+
+    if (hasToken && !this.tokenService.isTokenExpired()) {
+      console.log('Navegando a /home-visit-request');
+      this.router.navigate(['/home-visit-request']);
+    } else {
+      console.log('No autenticado, guardando returnUrl y redirigiendo a login');
+      localStorage.setItem('returnUrl', '/home-visit-request');
+      this.router.navigate(['/login']);
+    }
   }
 }

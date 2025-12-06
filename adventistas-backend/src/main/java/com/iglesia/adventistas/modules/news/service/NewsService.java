@@ -22,4 +22,6 @@ public interface NewsService {
     void deleteNews(Long id);
 
     void publishNews(Long id);
+
+    Page<NewsDTO> getNewsByCategory(Long categoryId, Pageable pageable);
 }

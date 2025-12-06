@@ -9,6 +9,7 @@ import { ChurchesListComponent } from './churches-list/churches-list.component';
 import { RegisterComponent } from './register/register.component';
 import { DepartmentDetailComponent } from './department-detail/department-detail.component';
 import { AboutSectionComponent } from './about-section/about-section.component';
+import { PrayerRequestComponent } from './prayer-request/prayer-request.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'churches', component: ChurchesListComponent },
       { path: 'departments/:slug', component: DepartmentDetailComponent },
       { path: 'about/:slug', component: AboutSectionComponent },
+      { path: 'prayer-request', component: PrayerRequestComponent },
       // { path: 'courses', loadChildren: () => import('./courses/courses.module').then(m => m.CoursesModule) },
       // { path: 'downloads', loadChildren: () => import('./downloads/downloads.module').then(m => m.DownloadsModule) },
       // { path: 'videos', loadChildren: () => import('./videos/videos.module').then(m => m.VideosModule) }

@@ -149,4 +149,12 @@ public class NewsServiceImpl implements NewsService {
         news.setPublishedAt(LocalDateTime.now());
         newsRepository.save(news);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<NewsDTO> getNewsByCategory(Long categoryId, Pageable pageable) {
+        log.info("Getting published news by category ID: {}", categoryId);
+        return newsRepository.findPublishedByCategory(categoryId, pageable)
+                .map(newsMapper::toDTO);
+    }
 }

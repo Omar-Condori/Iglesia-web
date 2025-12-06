@@ -33,7 +33,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Endpoints públicos
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/news/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/news/published").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/news/slug/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/news/category/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/departments/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/about/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/courses/featured").permitAll()

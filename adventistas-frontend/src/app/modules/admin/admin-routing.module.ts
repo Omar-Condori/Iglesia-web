@@ -13,6 +13,7 @@ import { CategoriesComponent } from './categories/categories.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { UsersListComponent } from './users/users-list/users-list.component';
 import { UserFormComponent } from './users/user-form/user-form.component';
+import { PrayerRequestsComponent } from './prayer-requests/prayer-requests.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,8 @@ const routes: Routes = [
       { path: 'users', component: UsersListComponent, canActivate: [RoleGuard], data: { permissions: ['users.view'] } },
       { path: 'users/new', component: UserFormComponent, canActivate: [RoleGuard], data: { permissions: ['users.create'] } },
       { path: 'users/edit/:id', component: UserFormComponent, canActivate: [RoleGuard], data: { permissions: ['users.edit'] } },
+
+      { path: 'prayer-requests', component: PrayerRequestsComponent },
 
       // { path: 'courses', loadChildren: () => import('./courses/courses-admin.module').then(m => m.CoursesAdminModule) },
       // { path: 'downloads', loadChildren: () => import('./downloads/downloads-admin.module').then(m => m.DownloadsAdminModule) },

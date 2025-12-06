@@ -2,7 +2,6 @@ package com.iglesia.adventistas.modules.churches.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +24,6 @@ public class CreateChurchRequest {
     @NotBlank(message = "La ciudad es requerida")
     private String city;
 
-    @NotBlank(message = "El estado es requerido")
     private String state;
 
     private String postalCode;
@@ -42,6 +40,11 @@ public class CreateChurchRequest {
     private Double latitude;
     private Double longitude;
 
-    @NotNull(message = "La unión es requerida")
+    private String pastor;
+    private Integer foundedYear;
+    private Integer membersCount;
+    private String serviceSchedule;
+    private String imageUrl;
+
     private Long unionId;
 }

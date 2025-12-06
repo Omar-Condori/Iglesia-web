@@ -12,7 +12,8 @@ import java.math.BigDecimal;
 public class ChurchMapper {
 
     public ChurchDTO toDTO(Church church) {
-        if (church == null) return null;
+        if (church == null)
+            return null;
 
         return ChurchDTO.builder()
                 .id(church.getId())
@@ -29,6 +30,11 @@ public class ChurchMapper {
                 .website(church.getWebsite())
                 .latitude(church.getLatitude() != null ? church.getLatitude().doubleValue() : null)
                 .longitude(church.getLongitude() != null ? church.getLongitude().doubleValue() : null)
+                .imageUrl(church.getImageUrl())
+                .pastor(church.getPastor())
+                .foundedYear(church.getFoundedYear())
+                .membersCount(church.getMembersCount())
+                .serviceSchedule(church.getServiceSchedule())
                 .isActive(church.getIsActive())
                 .unionName(church.getUnion() != null ? church.getUnion().getName() : null)
                 .createdAt(church.getCreatedAt())
@@ -36,7 +42,8 @@ public class ChurchMapper {
     }
 
     public Church toEntity(CreateChurchRequest request) {
-        if (request == null) return null;
+        if (request == null)
+            return null;
 
         Church church = new Church();
         church.setName(request.getName());
@@ -52,13 +59,19 @@ public class ChurchMapper {
         church.setWebsite(request.getWebsite());
         church.setLatitude(request.getLatitude() != null ? BigDecimal.valueOf(request.getLatitude()) : null);
         church.setLongitude(request.getLongitude() != null ? BigDecimal.valueOf(request.getLongitude()) : null);
+        church.setImageUrl(request.getImageUrl());
+        church.setPastor(request.getPastor());
+        church.setFoundedYear(request.getFoundedYear());
+        church.setMembersCount(request.getMembersCount());
+        church.setServiceSchedule(request.getServiceSchedule());
         church.setIsActive(true);
 
         return church;
     }
 
     public void updateEntity(CreateChurchRequest request, Church church) {
-        if (request == null || church == null) return;
+        if (request == null || church == null)
+            return;
 
         church.setName(request.getName());
         church.setSlug(SlugUtils.generateSlug(request.getName()));
@@ -73,5 +86,10 @@ public class ChurchMapper {
         church.setWebsite(request.getWebsite());
         church.setLatitude(request.getLatitude() != null ? BigDecimal.valueOf(request.getLatitude()) : null);
         church.setLongitude(request.getLongitude() != null ? BigDecimal.valueOf(request.getLongitude()) : null);
+        church.setImageUrl(request.getImageUrl());
+        church.setPastor(request.getPastor());
+        church.setFoundedYear(request.getFoundedYear());
+        church.setMembersCount(request.getMembersCount());
+        church.setServiceSchedule(request.getServiceSchedule());
     }
 }

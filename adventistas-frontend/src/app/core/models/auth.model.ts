@@ -11,7 +11,7 @@ export interface LoginResponse {
 
 export interface TokenPayload {
   sub: string; // email
-  authorities: string[];
+  authorities: string | string[]; // Can be comma-separated string OR array
   iat: number;
   exp: number;
 }

@@ -20,10 +20,10 @@
   },
   "home": {
     "hero": {
-      "title": "Bienvenidos a Adventistas.org",
-      "subtitle": "Compartiendo esperanza, fe y comunidad",
-      "exploreNews": "Ver Noticias",
-      "viewCourses": "Explorar Cursos"
+      "title": "Bienvenidos a la Iglesia Adventista Huancané",
+      "subtitle": "Una comunidad que ama, sirve y comparte esperanza",
+      "prayerRequest": "Pedir Oración",
+      "visitChurch": "Visitar Mi Hogar"
     },
     "stats": {
       "churches": "Iglesias",

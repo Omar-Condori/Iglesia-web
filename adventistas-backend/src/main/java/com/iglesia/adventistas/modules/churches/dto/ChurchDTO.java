@@ -26,6 +26,11 @@ public class ChurchDTO {
     private String website;
     private Double latitude;
     private Double longitude;
+    private String imageUrl;
+    private String pastor;
+    private Integer foundedYear;
+    private Integer membersCount;
+    private String serviceSchedule;
     private Boolean isActive;
     private String unionName;
     private LocalDateTime createdAt;

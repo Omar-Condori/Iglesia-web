@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
 
-    @Query("SELECT n FROM News n WHERE n.status = 'published' AND n.deletedAt IS NULL")
+    @Query("SELECT n FROM News n WHERE n.status = 'published' AND n.deletedAt IS NULL ORDER BY n.isFeatured DESC, n.publishedAt DESC")
     Page<News> findAllPublished(Pageable pageable);
 
     @Query("SELECT n FROM News n WHERE n.slug = :slug AND n.deletedAt IS NULL")
@@ -20,6 +20,9 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
     @Query("SELECT n FROM News n WHERE n.category.id = :categoryId AND n.deletedAt IS NULL")
     Page<News> findByCategoryId(Long categoryId, Pageable pageable);
+
+    @Query("SELECT n FROM News n WHERE n.category.id = :categoryId AND n.status = 'published' AND n.deletedAt IS NULL ORDER BY n.isFeatured DESC, n.publishedAt DESC")
+    Page<News> findPublishedByCategory(Long categoryId, Pageable pageable);
 
     boolean existsBySlug(String slug);
 }

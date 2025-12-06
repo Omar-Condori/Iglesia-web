@@ -18,6 +18,7 @@ export class AdminLayoutComponent implements OnInit {
     { icon: 'fa-tachometer-alt', label: 'Dashboard', route: '/admin/dashboard' },
     { icon: 'fa-newspaper', label: 'Noticias', route: '/admin/news' },
     { icon: 'fa-building', label: 'Departamentos', route: '/admin/departments' },
+    { icon: 'fa-praying-hands', label: 'Peticiones de Oración', route: '/admin/prayer-requests', permission: 'prayer-requests.view' },
     { icon: 'fa-tags', label: 'Categorías', route: '/admin/categories' },
     { icon: 'fa-church', label: 'Iglesias', route: '/admin/churches' },
     { icon: 'fa-users', label: 'Uniones', route: '/admin/unions' },
@@ -30,7 +31,7 @@ export class AdminLayoutComponent implements OnInit {
   constructor(
     public authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(

@@ -15,6 +15,9 @@ export interface Church {
   latitude?: number;
   longitude?: number;
   imageUrl?: string;
+  pastor?: string;
+  foundedYear?: number;
+  membersCount?: number;
   serviceSchedule?: string;
   isActive: boolean;
   unionName: string;
@@ -34,5 +37,10 @@ export interface CreateChurchRequest {
   website?: string;
   latitude?: number;
   longitude?: number;
-  unionId: number;
+  pastor?: string;
+  foundedYear?: number;
+  membersCount?: number;
+  serviceSchedule?: string;
+  imageUrl?: string;
+  unionId?: number;
 }

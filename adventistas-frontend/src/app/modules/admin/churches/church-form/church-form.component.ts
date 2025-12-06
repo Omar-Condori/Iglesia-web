@@ -125,12 +125,13 @@ export class ChurchFormComponent implements OnInit {
 
     this.isSubmitting = true;
 
-    if (this.selectedImage) {
-      const imageUrl = await this.uploadImage();
-      if (imageUrl) {
-        this.churchForm.patchValue({ imageUrl });
-      }
-    }
+    // COMMENTED OUT: Media upload endpoint doesn't exist yet
+    // if (this.selectedImage) {
+    //   const imageUrl = await this.uploadImage();
+    //   if (imageUrl) {
+    //     this.churchForm.patchValue({ imageUrl });
+    //   }
+    // }
 
     const formData = this.churchForm.value;
 
@@ -152,6 +153,12 @@ export class ChurchFormComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error saving church:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.error?.message || 'No se pudo guardar la iglesia',
+          confirmButtonColor: '#dc2626'
+        });
         this.isSubmitting = false;
       }
     });

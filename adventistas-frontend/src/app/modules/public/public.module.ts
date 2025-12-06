@@ -10,6 +10,7 @@ import { ChurchesListComponent } from './churches-list/churches-list.component';
 import { RegisterComponent } from './register/register.component';
 import { DepartmentDetailComponent } from './department-detail/department-detail.component';
 import { AboutSectionComponent } from './about-section/about-section.component';
+import { PrayerRequestComponent } from './prayer-request/prayer-request.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 /**
@@ -24,7 +25,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ChurchesListComponent,
     RegisterComponent,
     DepartmentDetailComponent,
-    AboutSectionComponent
+    AboutSectionComponent,
+    PrayerRequestComponent
   ],
   imports: [
     CommonModule,

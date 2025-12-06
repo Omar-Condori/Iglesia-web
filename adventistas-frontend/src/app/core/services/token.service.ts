@@ -84,7 +84,19 @@ export class TokenService {
    */
   getUserAuthorities(): string[] {
     const payload = this.decodeToken();
-    return payload?.authorities || [];
+    if (!payload?.authorities) {
+      return [];
+    }
+
+    // Handle both string (comma-separated) and array formats
+    if (typeof payload.authorities === 'string') {
+      return payload.authorities
+        .split(',')
+        .map(auth => auth.trim())
+        .filter(auth => auth.length > 0);
+    }
+
+    return payload.authorities;
   }
 
   /**

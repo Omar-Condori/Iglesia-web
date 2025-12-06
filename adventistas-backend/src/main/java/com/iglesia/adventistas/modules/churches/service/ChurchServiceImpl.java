@@ -32,11 +32,14 @@ public class ChurchServiceImpl implements ChurchService {
     public ChurchDTO createChurch(CreateChurchRequest request) {
         log.info("Creating church: {}", request.getName());
 
-        Union union = unionRepository.findById(request.getUnionId())
-                .orElseThrow(() -> new ResourceNotFoundException("Unión no encontrada"));
-
         Church church = churchMapper.toEntity(request);
-        church.setUnion(union);
+
+        // Only set union if unionId is provided
+        if (request.getUnionId() != null) {
+            Union union = unionRepository.findById(request.getUnionId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Unión no encontrada"));
+            church.setUnion(union);
+        }
 
         Church saved = churchRepository.save(church);
         return churchMapper.toDTO(saved);
@@ -49,10 +52,17 @@ public class ChurchServiceImpl implements ChurchService {
 
         churchMapper.updateEntity(request, church);
 
-        if (!church.getUnion().getId().equals(request.getUnionId())) {
-            Union union = unionRepository.findById(request.getUnionId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Unión no encontrada"));
-            church.setUnion(union);
+        // Handle union assignment
+        if (request.getUnionId() != null) {
+            // Check if union needs to be updated
+            if (church.getUnion() == null || !church.getUnion().getId().equals(request.getUnionId())) {
+                Union union = unionRepository.findById(request.getUnionId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Unión no encontrada"));
+                church.setUnion(union);
+            }
+        } else {
+            // Remove union if unionId is null
+            church.setUnion(null);
         }
 
         Church updated = churchRepository.save(church);
